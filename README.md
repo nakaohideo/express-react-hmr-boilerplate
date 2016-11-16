@@ -1,7 +1,7 @@
 # Express-React-HMR-Boilerplate
 
 ![Image of Express-React-HMR-Boilerplate]
-(http://i.imgur.com/XwOAaEd.png)
+(http://i.imgur.com/Vkb3eKE.png)
 
 A boilerplate for scaffolding production-ready MERN stack projects.
 
