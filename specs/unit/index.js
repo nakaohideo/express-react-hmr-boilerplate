@@ -1,1 +1,2 @@
 require('./apiEngine');
+require('./validateErrorObject');

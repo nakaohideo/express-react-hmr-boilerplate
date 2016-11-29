@@ -2,6 +2,7 @@ import superagent from 'superagent';
 import Errors from '../../common/constants/Errors';
 import serverConfigs from '../../../configs/project/server';
 import clientConfigs from '../../../configs/project/client';
+import validateErrorObject from '../utils/validateErrorObject';
 import { handleDbError } from '../decorators/handleError';
 import User from '../models/User';
 
@@ -21,7 +22,7 @@ export default {
       errors = newErrors;
     }
 
-    if (Object.keys(errors).length > 0) {
+    if (!validateErrorObject(errors)) {
       res.pushError(Errors.INVALID_DATA, {
         errors,
       });
