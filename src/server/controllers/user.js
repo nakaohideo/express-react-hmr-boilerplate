@@ -140,7 +140,7 @@ export default {
     res.json({});
   },
 
-  show(req, res) {
+  readSelf(req, res) {
     res.json({
       user: req.user,
     });

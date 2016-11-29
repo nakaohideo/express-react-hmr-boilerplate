@@ -122,13 +122,13 @@ describe('#userAPI', () => {
     });
   });
 
-  describe('#read()', () => {
+  describe('#readSelf()', () => {
     before((done) => {
       clearUsers(() => prepareUsers(reqs, userInstances, done));
     });
     it('[unauth user] should be rejected', (done) => {
       userAPI(apiEngine)
-        .read()
+        .readSelf()
         .catch((err) => {
           expect(err).to.have.lengthOf(1);
           expect(err[0].code)
@@ -138,7 +138,7 @@ describe('#userAPI', () => {
     });
     it('[normal user] should show user detail', (done) => {
       userAPI(new ApiEngine(reqs.users[0]))
-        .read()
+        .readSelf()
         .then((json) => {
           validateUser(json.user);
           done();
@@ -212,7 +212,7 @@ describe('#userAPI', () => {
         .then((json) => {
           expect(json).to.be.empty;
 
-          return userAPI(new ApiEngine(reqs.users[0])).read();
+          return userAPI(new ApiEngine(reqs.users[0])).readSelf();
         })
         .then((json) => {
           expect(json.user.email.isVerified).to.be.true;

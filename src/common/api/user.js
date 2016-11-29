@@ -20,7 +20,7 @@ export default (apiEngine) => ({
     })
   ),
   logout: () => apiEngine.get('/api/users/logout'),
-  read: () => apiEngine.get('/api/users/me'),
+  readSelf: () => apiEngine.get('/api/users/me'),
   update: (user) => apiEngine.put('/api/users/me', { data: user }),
   updateAvatarURL: (form) => apiEngine.put('/api/users/me/avatarURL', {
     data: form,

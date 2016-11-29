@@ -60,7 +60,7 @@ export default ({ app }) => {
     userController.resetPassword
   );
   app.get('/api/users/logout', userController.logout);
-  app.get('/api/users/me', authRequired, userController.show);
+  app.get('/api/users/me', authRequired, userController.readSelf);
   app.put('/api/users/me',
     authRequired,
     bodyParser.json,
