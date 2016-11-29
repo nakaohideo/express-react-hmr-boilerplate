@@ -1,10 +1,10 @@
 import React from 'react';
+import isString from 'lodash/isString';
 import { connect } from 'react-redux';
 import Grid from 'react-bootstrap/lib/Grid';
 import Alert from 'react-bootstrap/lib/Alert';
 import Table from 'react-bootstrap/lib/Table';
 import { removeError } from '../../actions/errorActions';
-import isString from '../../utils/isString';
 
 function renderMetaContent(metaContent) {
   if (isString(metaContent)) {

@@ -1,4 +1,4 @@
-import isString from '../../common/utils/isString';
+import isString from 'lodash/isString';
 
 /**
  * @returns {boolean} isPassed
