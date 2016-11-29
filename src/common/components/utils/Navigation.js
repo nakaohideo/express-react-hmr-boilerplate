@@ -31,8 +31,20 @@ class Navigation extends Component {
       <Navbar staticTop>
         <Grid>
           <Navbar.Header>
-            <Link className="navbar-brand" to="/" >
-              Logo
+            <Link
+              className="navbar-brand"
+              to="/"
+              style={{
+                padding: 5,
+              }}
+            >
+              <img
+                src="/img/logo.png"
+                style={{
+                  display: 'block',
+                  height: '100%',
+                }}
+              />
             </Link>
           </Navbar.Header>
 
