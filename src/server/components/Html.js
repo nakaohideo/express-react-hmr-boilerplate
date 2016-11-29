@@ -1,3 +1,4 @@
+import serialize from 'serialize-javascript';
 import React, { PropTypes } from 'react';
 import { renderToString } from 'react-dom/server';
 
@@ -39,7 +40,9 @@ const Html = ({ assets, children, initialState }) => (
 
       <script
         dangerouslySetInnerHTML={{
-          __html: `window.__INITIAL_STATE__=${JSON.stringify(initialState)};`,
+          __html: `window.__INITIAL_STATE__=${
+            serialize(initialState, { isJSON: true })
+          };`,
         }}
       />
       <script src="https://code.jquery.com/jquery-2.2.3.min.js" />
