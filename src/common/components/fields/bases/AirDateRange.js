@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { DateRangePicker } from 'react-dates';
+import moment from 'moment';
 
 let defaultValue = {
   startDate: null,
@@ -37,8 +38,16 @@ class AirDateRange extends Component {
         onDatesChange={this.onDatesChange}
         onFocusChange={this.onFocusChange}
         focusedInput={focusedInput}
-        startDate={input.value.startDate || defaultValue.startDate}
-        endDate={input.value.endDate || defaultValue.endDate}
+        startDate={
+          input.value.startDate ?
+          moment(input.value.startDate) :
+          defaultValue.startDate
+        }
+        endDate={
+          input.value.endDate ?
+          moment(input.value.endDate) :
+          defaultValue.endDate
+        }
       />
     );
   }

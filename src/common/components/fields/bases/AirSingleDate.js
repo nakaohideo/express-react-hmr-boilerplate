@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { SingleDatePicker } from 'react-dates';
+import moment from 'moment';
 
 let defaultValue = null;
 
@@ -33,7 +34,7 @@ class AirSingleDate extends Component {
         {...rest}
         id="date_input"
         focused={focused}
-        date={input.value || defaultValue}
+        date={input.value ? moment(input.value) : defaultValue}
         onDateChange={this.onDateChange}
         onFocusChange={this.onFocusChange}
       />
