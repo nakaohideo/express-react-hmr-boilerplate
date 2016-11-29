@@ -14,7 +14,7 @@ import Time from '../../widgets/Time';
 import VerifyEmailForm from '../../forms/user/VerifyEmailForm';
 import toRefreshURL from '../../../utils/toRefreshURL';
 
-class ShowPage extends Component {
+class ShowSelfPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -124,4 +124,4 @@ class ShowPage extends Component {
 export default connect(({ apiEngine, cookies: { user } }) => ({
   apiEngine: apiEngine,
   initialUser: (user && JSON.parse(user)) || {},
-}))(ShowPage);
+}))(ShowSelfPage);
