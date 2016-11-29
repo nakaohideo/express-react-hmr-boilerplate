@@ -10,16 +10,17 @@ export default {
       perPage: 5,
     }, handleDbError(res)((page) => {
       Todo
-        .find({})
-        .sort({ createdAt: 'desc' })
-        .limit(page.limit)
-        .skip(page.skip)
-        .exec(handleDbError(res)((todos) => {
+        .find({}, null, {
+          limit: page.limit,
+          skip: page.skip < 0 ? 0 : page.skip,
+          sort: { createdAt: 'desc' },
+        })
+        .then((todos) => {
           res.json({
             todos: todos,
             page: page,
           });
-        }));
+        });
     }));
   },
 
