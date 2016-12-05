@@ -106,6 +106,7 @@
     "morgan": "^1.7.0",
     "multer": "^1.1.0",
     "nodemailer": "^2.6.4",
+    "normalizr": "^2.2.1",
     "object-assign": "^4.1.0",
     "passport": "^0.3.2",
     "passport-facebook": "^2.1.1",
