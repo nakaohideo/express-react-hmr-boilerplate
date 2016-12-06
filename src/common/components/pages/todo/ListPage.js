@@ -5,14 +5,14 @@ import PageHeader from 'react-bootstrap/lib/PageHeader';
 import Resources from '../../../constants/Resources';
 import todoAPI from '../../../api/todo';
 import { pushErrors } from '../../../actions/errorActions';
+import { setCrrentPage } from '../../../actions/pageActions';
 import {
-  setTodo,
+  setTodos,
   addTodo,
   removeTodo,
 } from '../../../actions/todoActions';
-import { setCrrentPage, setPage } from '../../../actions/pageActions';
 import PageLayout from '../../layouts/PageLayout';
-import Pagination from '../../utils/BsPagination';
+import Pager from '../../utils/BsPager';
 
 class TodoItem extends Component {
   constructor() {
@@ -82,35 +82,49 @@ class TodoItem extends Component {
 }
 
 class ListPage extends Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
+    this.handlePageChange = this._handlePageChange.bind(this);
+    this.fetchTodos = this._fetchTodos.bind(this);
     this.handleAddClick = this._handleAddClick.bind(this);
   }
 
   componentDidMount() {
-    let { dispatch, location } = this.props;
-    dispatch(setCrrentPage(Resources.TODO, location.query.page || 1));
+    let { location } = this.props;
+
+    this.fetchTodos(location.query.page || 1);
   }
 
   componentDidUpdate(prevProps) {
-    let { dispatch, apiEngine, page, location } = this.props;
+    let { page, todos } = this.props;
 
-    if (prevProps.page.current !== page.current) {
-      todoAPI(apiEngine)
-        .list({ page: page.current })
-        .catch((err) => {
-          dispatch(pushErrors(err));
-          throw err;
-        })
-        .then((json) => {
-          dispatch(setTodo(json.todos));
-          dispatch(setPage(Resources.TODO, json.page));
-          dispatch(push({
-            pathname: location.pathname,
-            query: { page: json.page.current },
-          }));
-        });
+    if (todos.length === 0 && prevProps.page.current !== page.current) {
+      this.fetchTodos(page.current);
     }
+  }
+
+  _handlePageChange(pageId) {
+    let { dispatch } = this.props;
+
+    dispatch(setCrrentPage(Resources.TODO, pageId));
+  }
+
+  _fetchTodos(page) {
+    let { dispatch, apiEngine, location } = this.props;
+
+    todoAPI(apiEngine)
+      .list({ page })
+      .catch((err) => {
+        dispatch(pushErrors(err));
+        throw err;
+      })
+      .then((json) => {
+        dispatch(setTodos(json));
+        dispatch(push({
+          pathname: location.pathname,
+          query: { page: json.page.current },
+        }));
+      });
   }
 
   _handleAddClick() {
@@ -161,8 +175,22 @@ class ListPage extends Component {
     return (
       <PageLayout>
         <PageHeader>Todo List ({`${page.current} / ${page.total}`})</PageHeader>
-        <input type="text" ref="todotext" />
-        <button onClick={this.handleAddClick}>Add Todo</button>
+        <input
+          disabled={page.current !== 1}
+          type="text"
+          ref="todotext"
+        />
+        <button
+          disabled={page.current !== 1}
+          onClick={this.handleAddClick}
+        >
+          Add Todo
+        </button>
+        {page.current !== 1 && (
+          <div>
+            The input box is only available for page 1
+          </div>
+        )}
         <ul>
           {this.props.todos.map((todo) =>
             <TodoItem
@@ -171,14 +199,23 @@ class ListPage extends Component {
               onSaveClick={this.handleSaveClick.bind(this, todo._id)}
               text={todo.text} />)}
         </ul>
-        <Pagination resourceName={Resources.TODO} />
+        <Pager
+          page={page}
+          onPageChange={this.handlePageChange}
+        />
       </PageLayout>
     );
   }
 };
 
-export default connect(state => ({
-  apiEngine: state.apiEngine,
-  todos: state.todos,
-  page: state.pages[Resources.TODO] || {},
-}))(ListPage);
+export default connect(({ apiEngine, pagination, entity }) => {
+  let { page } = pagination.todos;
+  let todoPages = pagination.todos.pages[page.current] || { ids: [] };
+  let todos = todoPages.ids.map(id => entity.todos[id]);
+
+  return {
+    apiEngine,
+    todos,
+    page,
+  };
+})(ListPage);

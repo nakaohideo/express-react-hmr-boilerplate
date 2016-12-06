@@ -6,54 +6,67 @@ import Table from 'react-bootstrap/lib/Table';
 import Resources from '../../../../constants/Resources';
 import userAPI from '../../../../api/user';
 import { pushErrors } from '../../../../actions/errorActions';
-import { setCrrentPage, setPage } from '../../../../actions/pageActions';
+import { setCrrentPage } from '../../../../actions/pageActions';
+import { setUsers } from '../../../../actions/userActions';
 import PageLayout from '../../../layouts/AdminPageLayout';
-import Pagination from '../../../utils/BsPagination';
+import Pager from '../../../utils/BsPager';
 
 class ListPage extends Component {
   constructor() {
     super();
-    this.state = {
-      users: [],
-    };
+    this.handlePageChange = this._handlePageChange.bind(this);
+    this.fetchUsers = this._fetchUsers.bind(this);
   }
 
   componentDidMount() {
-    let { dispatch, location } = this.props;
-    dispatch(setCrrentPage(Resources.USER, location.query.page || 1));
+    let { location } = this.props;
+
+    this.fetchUsers(location.query.page || 1);
   }
 
   componentDidUpdate(prevProps) {
-    let { dispatch, apiEngine, page, location } = this.props;
+    let { page, users } = this.props;
 
-    if (prevProps.page.current !== page.current) {
-      userAPI(apiEngine)
-        .list({ page: page.current })
-        .catch((err) => {
-          dispatch(pushErrors(err));
-          throw err;
-        })
-        .then((json) => {
-          this.setState({ users: json.users });
-          dispatch(setPage(Resources.USER, json.page));
-          dispatch(push({
-            pathname: location.pathname,
-            query: { page: json.page.current },
-          }));
-        });
+    if (users.length === 0 && prevProps.page.current !== page.current) {
+      this.fetchUsers(page.current);
     }
   }
 
+  _handlePageChange(pageId) {
+    let { dispatch } = this.props;
+
+    dispatch(setCrrentPage(Resources.USER, pageId));
+  }
+
+  _fetchUsers(page) {
+    let { dispatch, apiEngine, location } = this.props;
+
+    userAPI(apiEngine)
+      .list({ page })
+      .catch((err) => {
+        dispatch(pushErrors(err));
+        throw err;
+      })
+      .then((json) => {
+        dispatch(setUsers(json));
+        dispatch(push({
+          pathname: location.pathname,
+          query: { page: json.page.current },
+        }));
+      });
+  }
+
   render() {
-    let { users } = this.state;
+    let { users, page } = this.props;
 
     return (
       <PageLayout>
-        <PageHeader>User List</PageHeader>
+        <PageHeader>User List ({`${page.current} / ${page.total}`})</PageHeader>
         <Table striped bordered>
           <thead>
             <tr>
               <th>ID</th>
+              <th>Avatar</th>
               <th>Name</th>
               <th>Email</th>
               <th>Role</th>
@@ -64,6 +77,14 @@ class ListPage extends Component {
             {users.map((user) => (
               <tr key={user._id}>
                 <td>{user._id}</td>
+                <td>
+                  <img
+                    src={user.avatarURL}
+                    style={{
+                      maxHeight: 32,
+                    }}
+                  />
+                </td>
                 <td>{user.name}</td>
                 <td>{user.email.value}</td>
                 <td>{user.role}</td>
@@ -72,13 +93,23 @@ class ListPage extends Component {
             ))}
           </tbody>
         </Table>
-        <Pagination resourceName={Resources.USER} />
+        <Pager
+          page={page}
+          onPageChange={this.handlePageChange}
+        />
       </PageLayout>
     );
   }
 }
 
-export default connect(state => ({
-  apiEngine: state.apiEngine,
-  page: state.pages[Resources.USER] || {},
-}))(ListPage);
+export default connect(({ apiEngine, pagination, entity }) => {
+  let { page } = pagination.users;
+  let userPages = pagination.users.pages[page.current] || { ids: [] };
+  let users = userPages.ids.map(id => entity.users[id]);
+
+  return {
+    apiEngine,
+    users,
+    page,
+  };
+})(ListPage);
