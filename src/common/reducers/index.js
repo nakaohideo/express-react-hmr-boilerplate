@@ -7,6 +7,8 @@ import pages from './pageReducer';
 import todos from './todoReducer';
 import form from './formReducer';
 import intl from './intlReducer';
+import entity from './entityReducer';
+import pagination from './paginationReducer';
 
 const rootReducer = combineReducers({
   routing,
@@ -17,6 +19,8 @@ const rootReducer = combineReducers({
   todos,
   form, // must mount as `form` from redux-form's docs
   intl,
+  entity,
+  pagination,
 });
 
 export default rootReducer;
