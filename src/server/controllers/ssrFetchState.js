@@ -1,11 +1,9 @@
 import Errors from '../../common/constants/Errors';
-import Resources from '../../common/constants/Resources';
 import todoAPI from '../../common/api/todo';
 import wrapTimeout from '../decorators/wrapTimeout';
 import { loginUser } from '../../common/actions/userActions';
 import { updateLocale } from '../../common/actions/intlActions';
-import { setTodo } from '../../common/actions/todoActions';
-import { setPage } from '../../common/actions/pageActions';
+import { setTodos } from '../../common/actions/todoActions';
 
 export default {
   user: (req, res, next) => {
@@ -45,8 +43,7 @@ export default {
         next();
       })
       .then((json) => {
-        req.store.dispatch(setTodo(json.todos));
-        req.store.dispatch(setPage(Resources.TODO, json.page));
+        req.store.dispatch(setTodos(json));
         next();
       });
   }),
