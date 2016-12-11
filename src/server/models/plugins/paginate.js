@@ -38,7 +38,7 @@ export default (schema, options) => {
     this
       .count(opts.condition)
       .exec((err, count) => {
-        let totalPage = Math.ceil(count / opts.perPage);
+        let totalPage = Math.max(Math.ceil(count / opts.perPage), 1);
         let lastPage = opts.firstPage + totalPage - 1;
 
         if (opts.page < opts.firstPage) {
