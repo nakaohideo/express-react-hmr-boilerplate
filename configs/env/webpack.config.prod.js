@@ -18,7 +18,7 @@ module.exports = {
   output: {
     path: path.join(__dirname, '../../build/public/js'),
     filename: 'bundle.js',
-    chunkFilename: '[id].chunk.js',
+    chunkFilename: '[id].[hash].chunk.js',
     publicPath: '/js/',
   },
   externals: {
@@ -33,13 +33,17 @@ module.exports = {
         BROWSER: JSON.stringify(true),
       },
     }),
+    new webpack.optimize.MinChunkSizePlugin({
+      minChunkSize: 10000,
+    }),
+    new webpack.optimize.AggressiveMergingPlugin(),
     new webpack.optimize.UglifyJsPlugin({
       compress: {
         dead_code: true,
-      },
-      compressor: {
         warnings: false,
       },
+      comments: false,
+      sourceMap: false,
     }),
     new ExtractTextPlugin('[name]-[chunkhash].css', {
       allChunks: true,
