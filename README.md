@@ -188,7 +188,9 @@ It will show you a 3-step instruction to setup private Travis environment variab
 
 > To sync configs on local side and on travis, you need to repeat the steps every time you update configs or tests
 
-## Deploy on [Heroku](https://www.heroku.com/)
+## Deploy
+
+### Deploy on [Heroku](https://www.heroku.com/)
 
 Please login heroku first, and run the command
 
@@ -197,7 +199,7 @@ gulp build:production
 gulp deploy [--app=<heroku_app_name>] [--create]
 ```
 
-### Options
+#### Options
 
 - `-a`, `--app`
 
@@ -206,6 +208,16 @@ gulp deploy [--app=<heroku_app_name>] [--create]
 - `-c`, `--create`
 
   If you want to create new app on heroku, please use this switch.
+
+### Deploy on local windows system
+
+1. [Allow port 80 for both inbound and outbound](https://www.youtube.com/watch?v=oxY81uM3yzs)
+2. Open terminal as `administrator`
+3. Launch production server:
+
+  ```
+  set PORT=80 && npm run pm2
+  ```
 
 ## React Native
 
