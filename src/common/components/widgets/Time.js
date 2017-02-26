@@ -2,14 +2,14 @@
 import React, { PropTypes } from 'react';
 import moment from 'moment';
 
-const Time = ({ value, format, relative }) => {
+const Time = ({ value, format, relative, ...rest }) => {
   let v = null;
   if (value) {
     v = moment(value);
     v = relative ? v.fromNow() : v.format(format);
   }
   return (
-    <time>{v}</time>
+    <time {...rest}>{v}</time>
   );
 };
 
