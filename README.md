@@ -5,7 +5,6 @@
 
 A boilerplate for scaffolding production-ready MERN stack projects.
 
-
 | | master | dev |
 | --- | --- | --- |
 | Build Status | [![Build Status](https://travis-ci.org/gocreating/express-react-hmr-boilerplate.svg?branch=master)](https://travis-ci.org/gocreating/express-react-hmr-boilerplate) | [![Build Status](https://travis-ci.org/gocreating/express-react-hmr-boilerplate.svg?branch=dev)](https://travis-ci.org/gocreating/express-react-hmr-boilerplate) |
@@ -20,6 +19,7 @@ A boilerplate for scaffolding production-ready MERN stack projects.
 - Nodejs + Express
 - Reactjs + Redux + Redux-Thunk + React-Router + React-Router-Redux + Redux-Form + React-Intl
 - Mongodb + Mongoose + MongoLab
+- Normalizr
 - Livereload
 - Server-Side Rendering (SSR) & State Fetching (Isomorphic)
 - Webpack + Code Splitting
@@ -250,10 +250,76 @@ Once there is a new version of this boilerplate, you can upgrade with the follow
 ```
 git checkout mirror
 git pull mirror mirror
+# git fetch mirror dev:mirror --update-head-ok
 git checkout develop
 git flow feature start upgrade-mirror
 git merge --no-ff --no-edit mirror
+# solve conflicts
 git flow feature finish upgrade-mirror
+```
+
+## Caveats
+
+### Form Adapter
+
+We use redux-form as the infrastructure to construct all form elements. Since there is a [losing focus issue](https://github.com/erikras/redux-form/issues/1094), please don't render form adapters inside component's render cycle.
+
+```
+// working
+
+class SomeForm extends Component {
+  // ...
+
+  someDollarAdapter = ({ input, ...rest }) => {
+    return (
+      <span>
+        <Input input={input} {...rest} /> $NTD
+      </span>
+    );
+  };
+
+  render() {
+    return (
+      <Form>
+        <Field
+          name="budget"
+          component={FormField}
+          label="Budget"
+          adapter={this.someDollarAdapter}
+          type="number"
+        />
+      </Form>
+    );
+  }
+};
+```
+
+```
+// broken
+
+class SomeForm extends Component {
+  // ...
+
+  render() {
+    return (
+      <Form>
+        <Field
+          name="budget"
+          component={FormField}
+          label="Budget"
+          adapter={({ input, ...rest }) => {
+            return (
+              <span>
+                <Input input={input} {...rest} /> $NTD
+              </span>
+            );
+          }}
+          type="number"
+        />
+      </Form>
+    );
+  }
+};
 ```
 
 ## Roadmap
@@ -290,10 +356,13 @@ git flow feature finish upgrade-mirror
 - [x] Add Checkbox to Agree Terms ([d6b814d](../../commit/d6b814d78185bfa25c26f37df6e4aa1ec338b48a))
 - [x] Add `plaintext`, `checkbox`, `checkboxes`, `textarea`, `select`, `rangeSlider`, `airSingleDate` and `airDateRange` Type Form Fields ([2bbf17d](../../commit/2bbf17d808deb8783cdef2be815eea3a576dcbd1))
 - [x] Add Hint for Disabled Social Auth Service ([813b089](../../commit/813b0896f57f1487f1235fc0797edec18e3b59f3))
+- [x] Fix bug: Mongoose promise out of date ([52cca26](../../commit/52cca26ef4fa12d419f2ea165835ed9e8fa05f26))
+- [x] Add Logo ([a527b4f](../../commit/a527b4f695a8309946b0de070a08066cbb4bee5d))
+- [x] Patch XSS Vulnerability ([c18644b](../../commit/c18644b7243d482c37e763d9e2427790a9392213))
+  - reference: [The Most Common XSS Vulnerability in React.js Applications](https://medium.com/node-security/the-most-common-xss-vulnerability-in-react-js-applications-2bdffbcc1fa0#.6j1r3sndu)
 - [ ] Landing Page
 - [ ] Translate Languages
 - [x] Add MIT License ([43a5267](../../commit/43a526723a8c831fc307e24689206ecce5dab380))
-- [ ] Add Logo
 - [ ] Update Packages
 
 ### v1.0+
