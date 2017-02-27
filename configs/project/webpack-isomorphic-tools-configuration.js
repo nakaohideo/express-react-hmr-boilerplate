@@ -7,7 +7,7 @@ module.exports = {
   webpack_stats_file_path: '../configs/project/isomorphic/webpack-stats.json',
   assets: {
     cssModules: {
-      extensions: ['scss'],
+      extensions: ['css', 'scss'],
       filter: function(module, regex, options, log) {
         if (options.development) {
           // in development mode there's webpack "style-loader",
