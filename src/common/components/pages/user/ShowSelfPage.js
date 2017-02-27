@@ -123,5 +123,5 @@ class ShowSelfPage extends Component {
 
 export default connect(({ apiEngine, cookies: { user } }) => ({
   apiEngine: apiEngine,
-  initialUser: (user && JSON.parse(user)) || {},
+  initialUser: user || {},
 }))(ShowSelfPage);

@@ -1,6 +1,6 @@
 export default (store) => (requiredRoles) => (nextState, replace) => {
   let { user } = store.getState().cookies;
-  user = (user && JSON.parse(user)) || {};
+  user = user || {};
 
   if (!((
     requiredRoles instanceof Array &&

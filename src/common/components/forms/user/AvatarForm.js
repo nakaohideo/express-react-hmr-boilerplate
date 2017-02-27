@@ -252,5 +252,5 @@ export default reduxForm({
   validate,
 })(connect(({ apiEngine, cookies: { user } }) => ({
   apiEngine: apiEngine,
-  user: (user && JSON.parse(user)) || {},
+  user: user || {},
 }))(AvatarForm));
