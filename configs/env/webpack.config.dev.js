@@ -48,10 +48,10 @@ module.exports = {
       test: webpackIsomorphicToolsPlugin.regular_expression('cssModules'),
       loaders: [
         'style-loader',
-        'css-loader?modules&localIdentName=[name]_[local]_[hash:base64:3]',
-        'sass-loader',
+        'css-loader',
         'postcss-loader',
+        'sass-loader',
       ],
-    },],
+    }],
   },
 };

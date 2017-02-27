@@ -45,7 +45,7 @@ module.exports = {
       comments: false,
       sourceMap: false,
     }),
-    new ExtractTextPlugin('[name]-[chunkhash].css', {
+    new ExtractTextPlugin('[name].[contenthash].css', {
       allChunks: true,
     }),
     webpackIsomorphicToolsPlugin,
@@ -58,10 +58,11 @@ module.exports = {
       query: babelConfig,
     }, {
       test: webpackIsomorphicToolsPlugin.regular_expression('cssModules'),
-      loader: ExtractTextPlugin.extract(
-        'style',
-        'css?modules&localIdentName=[name]_[local]_[hash:base64:3]!sass?outputStyle=expanded&sourceMap=true&sourceMapContents=true'
-      ),
-    },],
+      loader: ExtractTextPlugin.extract('style', [
+        'css-loader',
+        'postcss-loader',
+        'sass-loader',
+      ]),
+    }],
   },
 };

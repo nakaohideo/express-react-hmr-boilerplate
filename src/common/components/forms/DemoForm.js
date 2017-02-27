@@ -5,7 +5,6 @@ import { Field, reduxForm } from 'redux-form';
 import Alert from 'react-bootstrap/lib/Alert';
 import Button from 'react-bootstrap/lib/Button';
 import FormNames from '../../constants/FormNames';
-import Head from '../widgets/Head';
 import {
   RangeSlider,
   AirSingleDate,
@@ -76,11 +75,6 @@ class DemoForm extends Component {
         defaultFieldDimensions={{ sm: 6 }}
         onSubmit={handleSubmit(this.handleSubmit)}
       >
-        <Head
-          links={[
-            '/css/react-dates.css',
-          ]}
-        />
         {submitFailed && error && (<Alert bsStyle="danger">{error}</Alert>)}
         <Alert bsStyle="info">
           File object is not going to show here.
