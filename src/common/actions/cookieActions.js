@@ -1,25 +1,37 @@
-import ActionTypes from '../constants/ActionTypes';
 import cookie from 'cookie';
 import assign from 'object-assign';
+import isString from 'lodash/isString';
+import isObject from 'lodash/isObject';
+import ActionTypes from '../constants/ActionTypes';
+import { deserializeCookie } from '../utils/deserializeCookieMap';
 
 export const setCookie = (name, value, options) => {
   options = assign({
     path: '/',
   }, options);
+  let deserializedValue = deserializeCookie(value);
+
   return (dispatch, getState) => {
     return Promise
       .resolve(dispatch({
         type: ActionTypes.SET_COOKIE,
         cookie: {
           name,
-          value,
+          value: deserializedValue,
           options,
         },
       }))
       .then(() => {
         if (process.env.BROWSER) {
+          let serializedValue;
+
+          if (isString(value)) {
+            serializedValue = value;
+          } else if (isObject(value)) {
+            serializedValue = JSON.stringify(value);
+          }
           document.cookie = cookie.serialize(
-            name, getState().cookies[name], options);
+            name, serializedValue, options);
         }
         return Promise.resolve();
       });
