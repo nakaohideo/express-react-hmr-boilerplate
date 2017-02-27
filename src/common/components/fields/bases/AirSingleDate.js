@@ -32,6 +32,7 @@ class AirSingleDate extends Component {
 
     return (
       <SingleDatePicker
+        numberOfMonths={1}
         {...rest}
         id="date_input"
         focused={focused}
