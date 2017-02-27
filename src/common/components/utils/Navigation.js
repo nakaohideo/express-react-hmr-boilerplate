@@ -126,7 +126,7 @@ Navigation.contextTypes = {
 
 export default connect(({ cookies: { token, user } }) => ({
   isAuth: !!token,
-  user: (user && JSON.parse(user)) || {},
+  user: user || {},
 }), null, null, {
   pure: false,
 })(Navigation);
