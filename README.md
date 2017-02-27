@@ -45,6 +45,42 @@ A boilerplate for scaffolding production-ready MERN stack projects.
   - Admin System
 - React Native
 
+## Setup your new project
+
+Follow the commands below to integrate this boilerplate into your own project as `mirror` branch.
+
+``` bash
+cd <your_project>
+git flow init -d
+git remote add -t master mirror https://github.com/gocreating/express-react-hmr-boilerplate.git
+git fetch mirror master:mirror # git fetch <remote> <rbranch>:<lbranch>
+
+git flow feature start mirror
+git merge --no-ff --no-edit mirror
+git flow feature finish mirror
+
+# git flow feature start tune-mirror
+# tune the boilerplate to suit your own project
+# git flow feature finish tune-mirror
+
+git remote add origin <your_project.git>
+git push -u origin master
+```
+
+Once there is a new version of this boilerplate, you can upgrade with the following commands
+
+```
+git checkout mirror
+# git pull mirror dev
+#          ^^^^^^ ^^^ → upgrade local mirror branch from boilerplate's dev branch
+# git fetch mirror dev:mirror --update-head-ok
+git checkout develop
+git flow feature start upgrade-mirror
+git merge --no-ff --no-edit mirror
+# solve conflicts
+git flow feature finish upgrade-mirror
+```
+
 ## Installation
 
 ```
@@ -233,41 +269,6 @@ For production or distributing APK, please refer to the setup part of [Generatin
 npm run android-keygen
 npm run release-android
 npm run install-android
-```
-
-## Setup a new project
-
-Follow the commands below to integrate this boilerplate into your own project as `mirror` branch.
-
-``` bash
-cd <your_project>
-git flow init -d
-git remote add -t master mirror https://github.com/gocreating/express-react-hmr-boilerplate.git
-git fetch mirror master:mirror # git fetch <remote> <rbranch>:<lbranch>
-
-git flow feature start mirror
-git merge --no-ff --no-edit mirror
-git flow feature finish mirror
-
-# git flow feature start tune-mirror
-# tune the boilerplate to suit your own project
-# git flow feature finish tune-mirror
-
-git remote add origin <your_project.git>
-git push -u origin master
-```
-
-Once there is a new version of this boilerplate, you can upgrade with the following commands
-
-```
-git checkout mirror
-git pull mirror mirror
-# git fetch mirror dev:mirror --update-head-ok
-git checkout develop
-git flow feature start upgrade-mirror
-git merge --no-ff --no-edit mirror
-# solve conflicts
-git flow feature finish upgrade-mirror
 ```
 
 ## Caveats
