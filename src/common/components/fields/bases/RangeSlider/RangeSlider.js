@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import ReactSlider from 'react-slider';
+import './RangeSlider.scss';
 
 let defaultValue = {
   min: 0,

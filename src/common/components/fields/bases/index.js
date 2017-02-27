@@ -1,7 +1,7 @@
 export { default as Input } from './Input';
 export { default as Textarea } from './Textarea';
 export { default as Plaintext } from './Plaintext';
-export { default as RangeSlider } from './RangeSlider';
+export { default as RangeSlider } from './RangeSlider/RangeSlider';
 export { default as AirSingleDate } from './AirSingleDate';
 export { default as AirDateRange } from './AirDateRange';
 export { default as Select } from './Select';
