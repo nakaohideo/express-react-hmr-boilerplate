@@ -118,20 +118,15 @@ export default {
 
     user.lastLoggedInAt = new Date();
     user.save(handleDbError(res)(() => {
-      req.store
-        .dispatch(loginUser({
-          token: token,
-          data: user,
-        }))
-        .then(() => {
-          let { token, user } = req.store.getState().cookies;
-          let state = JSON.parse(req.query.state);
+      let state = JSON.parse(req.query.state);
 
-          res.cookie('token', token);
-          res.cookie('user', user);
-          req.store.dispatch(redirect(state.next || '/'));
-          return next();
-        });
+      req.store.dispatch(loginUser({
+        token: token,
+        data: user,
+      }, res));
+      req.store.dispatch(redirect(state.next || '/'));
+
+      return next();
     }));
   },
 

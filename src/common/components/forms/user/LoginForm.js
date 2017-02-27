@@ -38,19 +38,10 @@ const validate = (values) => {
 class LoginForm extends Component {
   constructor(props) {
     super(props);
-    this.login = this._login.bind(this);
     this.handleSubmit = this._handleSubmit.bind(this);
   }
 
-  _login(json) {
-    return this.props.dispatch(loginUser({
-      token: json.token,
-      data: json.user,
-    }));
-  }
-
   _handleSubmit(formData) {
-    // let { store } = this.context;
     let { dispatch, apiEngine, change } = this.props;
 
     return userAPI(apiEngine)
@@ -61,11 +52,14 @@ class LoginForm extends Component {
       })
       .then((json) => {
         if (json.isAuth) {
-          this.login(json).then(() => {
-            // redirect to the origin path before logging in
-            let { next } = this.props.routing.locationBeforeTransitions.query;
-            dispatch(push(next || '/'));
-          });
+          // redirect to the origin path before logging in
+          let { next } = this.props.routing.locationBeforeTransitions.query;
+
+          dispatch(loginUser({
+            token: json.token,
+            data: json.user,
+          }));
+          dispatch(push(next || '/'));
         } else {
           change('password', '');
           throw new SubmissionError({

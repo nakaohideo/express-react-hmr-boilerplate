@@ -5,12 +5,12 @@ import { setCookies, removeCookie } from './cookieActions';
 import { setEntities } from './entityActions';
 import { setPages } from './pageActions';
 
-export const loginUser = ({ token, data }) => {
+export const loginUser = ({ token, data }, res = null) => {
   return (dispatch) => {
     return dispatch(setCookies({
       token,
       user: data,
-    }));
+    }, res));
   };
 };
 
