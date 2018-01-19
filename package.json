@@ -8,7 +8,7 @@
     "lint": "./node_modules/.bin/eslint --config=./.eslintrc.json ./src",
     "clean": "gulp clean",
     "build": "gulp build",
-    "mocha": "mocha specs/index.js --timeout 10000",
+    "mocha": "node ./node_modules/mocha/bin/mocha specs/index.js --timeout 10000",
     "start": "node build/server/server.js",
     "pm2": "node ./build/server/pm2Entry.js",
     "android": "npm run native-run-android && npm run native-watch-css",

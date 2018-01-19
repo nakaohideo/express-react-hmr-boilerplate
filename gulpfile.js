@@ -113,7 +113,9 @@ gulp.task('webpack:production', ['build:reactjs'], function(cb) {
 // copy static files
 gulp.task('copy', function() {
   var staticTask = gulp
-    .src(paths.statics)
+    .src(paths.statics, {
+      dot: true,
+    })
     .pipe(gulp.dest(path.join(paths.targetDir, 'public')));
   var componentStyleTask = gulp
     .src(paths.componentStyles)
